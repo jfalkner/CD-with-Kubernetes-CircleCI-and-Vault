@@ -14,6 +14,70 @@ Links to elaborate on:
 * [Launch Darkly](https://launchdarkly.com/) for feature flags and having a constant ship train to live
 * [GitHub](https://github.com/) for tracking software
 
+## git and GitHub
+
+Foundation pieces of many developer groups. `git` is very popular but is just one of many [version control](https://en.wikipedia.org/wiki/Version_control) tools used historically. It is used to track who made what change when for all edits to the software's source files. Also allows for making many simultaneous changes and merging them together. Invaluable tool for coordinating work, and incredible for auditing who did what.
+
+GitHub (aka GH) adds a lot of functionality for team-based work, primarily visualizing and enabling code review; however, it also has many integrations for automatically doing all sorts of useful tedium that benefits teams. GH also gets in to some project management with issues, projects and Kanban-style tickets management. 
+
+> Tip: If you don't know better, just use `git` and GitHub. Don't bother with other stuff (i.e. don't default to Bitbucket and Bamboo just because some non-developer in your org bought Atlassian's JIRA).
+
+Here are some examples of git. Not always command-line, but that is what many prefer.
+
+```
+# copy the history of all edits of this content and code (aka repo)
+git clone https://github.com/jfalkner/devops.git
+
+# inspect history of change. who, when, what
+git log
+# commit 46cdfff2f986196388f066c13676a7b07c98cedc
+# Author: Jayson Falkner <jfalkner@gmail.com>
+# Date:   Thu Sep 14 22:10:28 2017 -0400
+#
+#    Initial Docker summary
+# ...
+
+# make a branch named 'hello-node' so changes can be reviewed before they clobber production code
+git branch hello-node
+
+# add some new files
+git add docker
+
+# see what was added/changed compared to what is in the repo
+git status
+# On branch hello-node
+# Your branch is up-to-date with 'origin/master'.
+# Changes to be committed:
+#
+# new file:   docker/hello-node/Dockerfile
+#	new file:   docker/hello-node/README.md
+#	new file:   docker/hello-node/server.js
+
+# make the changes and push to the repo hosted on GitHub
+git commit -m "Example node.js service in Docker"
+git push origin hello-node
+```
+
+And on GitHub you can see the changes in a Pull Request (aka PR). 
+
+![Example PR](docs/github/hello-node_PR.png)
+
+Which let's you also see the commit history. It is usually expected that commits are a meaningful, logical history of changes.
+
+![Example Commits](docs/github/hello-node_commit.png)
+
+> Tip: If hiring, check the dev's GitHub profile. Nice if they have one. Better if each project makes sense has well done README.md. Best if there are well done "squashed" commits with good descriptions. Good devs usually take pride in their work and polish up commit history for posterity.
+
+PRs also show code changes. The view lets others leave comments and reviews in specific locations of interst. Fantastic for preventing bugs, mentoring, making sure others know what is changing and continuous learning for team members.
+
+![Example Changes](docs/github/hello-node_changes.png)
+
+> Tip: Healthy teams usually enjoy PR review and have at least one other dev, if not several look over changes. It is perhaps the most enjoyable part of day-to-day coding.
+
+> Tip: PR review is a great spot to watch for [bike shedding](http://whatis.techtarget.com/definition/Parkinsons-law-of-triviality-bikeshedding) and inappropriate [no asshole rule](https://en.wikipedia.org/wiki/The_No_Asshole_Rule) activity. In both cases, course correct or remove offending devs before they tank an otherwise healthy team.
+
+There is a lot of more advanced GitHub usage, including an amazing API. Above is just a very light intro to the core stuff.
+
 ## Docker
 
 [Docker](https://docs.docker.com/engine/) let's you wrap up both code and dependencies and run them as a "container" on the same computer. It is a fast and easy way to reliably run different software on the same computer. It mainly works by resource isolation. Same kernel but mem usage, CPU, threads, can't interfere with each other. Great summary on [wikipedia](https://en.wikipedia.org/wiki/Docker_(software)) and [history here](https://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016) since this idea is an old one.
