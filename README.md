@@ -115,17 +115,3 @@ docker container attach 4bad9a6e7525 # container's id
 # drop the image from your local store when it is no longer needed
 docker rmi f35a041887c9
 ```
-
-## TODO
-
-Some DevOps fun and a bootstrap of minimal, appropriate devops for the languages I've used. The point of this is to exercise some good practices, make it easy to reuse and also document it all in a way that is easy to teach others.
-
-If you are a software developer, don't get frustrated by resource allocation or a devops team. If you are a CTO, don't shy away from the appropriate setup because you think stuff like Kubernetes is too complex or you don't understand microservices.
-
-Links to elaborate on:
-
-*  for provisioning and container management
-  *  to containerize code plus libraries
-*  for secrets
-*  for feature flags and having a constant ship train to live
-*  for tracking software
