@@ -115,3 +115,22 @@ docker container attach 4bad9a6e7525 # container's id
 # drop the image from your local store when it is no longer needed
 docker rmi f35a041887c9
 ```
+
+## Kubernetes (aka k8s)
+
+A robust way to deploy, manage and scale microservices (aka your Docker images). Google created and released [k8s](https://kubernetes.io) in 2015, and, in short, it is likely what your devops team is inventing if they aren't already using it. Just use it. You can also use [minikube](https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/) to test locally and [kops](https://github.com/kubernetes/kops) to setup and deploy everything needed for clusters on AWS.
+
+Install minikube then spin it up locally and deploy a service with kubectl.
+
+```
+# start a service in k8s
+kubectl run hello-node --image=hello-node/v1 --port=8080
+
+# re-deploy the service when it updates
+# docker build -t hello-node/v2 .
+kubectl set image deployment/hello-node hello-node=hello-node/v2
+```
+
+The cycle above repeats for every released service update. You then config how many instances (pods) of a services shoudld run, and how many servers (nodes) should be used to scale the system. More complex configuration can be done to co-locate pods. It all runs on a VPC too, meaning by default traffic is appropriately restricted to just the k8s subnet.
+
+K8s also can run one time jobs, reoccuring jobs and expose services for use externally.
