@@ -1,18 +1,19 @@
-# Continuous Delivery with Kubernetes, CircleCI and Vault
+# Devops That Work Well
 
 > Work-in-Progress. Mostly for my own use right now.
 
-Some DevOps fun and a bootstrap of minimal, appropriate devops for the languages I've used. The point of this is to exercise some good practices, make it easy to reuse and also document it all in a way that is easy to teach others.
+Brief overview of streamlining software developer operations. Written by someone who has managed several engineering teams at several different companies. The intended style is to cover a lot but keep it succinct. You should know this stuff, and hopefully have management that values it.
 
-If you are a software developer, don't get frustrated by resource allocation or a devops team. If you are a CTO, don't shy away from the appropriate setup because you think stuff like Kubernetes is too complex or you don't understand microservices.
+Why care? A good, scalable devops stack saves the entire team time. It reduces maintenance time dramatically. It also designs away many scalability issues and team/org failure modes. You don't need a dedicated "devops" team to do this right.
 
-Links to elaborate on:
+At really high level, here is how it works:
 
-* [Kubernetes](https://kubernetes.io/docs/home/) for provisioning and container management
-  * [Docker](https://www.docker.com/) to containerize code plus libraries
-* [Vault](https://www.vaultproject.io/) for secrets
-* [Launch Darkly](https://launchdarkly.com/) for feature flags and having a constant ship train to live
-* [GitHub](https://github.com/) for tracking software
+* Track all code changes in [git](https://git-scm.com/) and review in [GitHub](https://github.com/)
+* Isolate code and reproducibly run it via [Docker](https://www.docker.com/) in a scalable way on servers with [Kubernetes](https://kubernetes.io/docs/home/) and use Helm to version entire rollouts of services and jobs.
+* Auto-test code updates and continuously deploy with CircleCI. Prototype with feature flags in [Launch Darkly](https://launchdarkly.com/)
+* Stash secrets in [Vault](https://www.vaultproject.io/)
+
+When setup well, the entire team focuses on coding, reviewing code and communicating. Exactly what everyone wants.
 
 ## git and GitHub
 
@@ -114,3 +115,17 @@ docker container attach 4bad9a6e7525 # container's id
 # drop the image from your local store when it is no longer needed
 docker rmi f35a041887c9
 ```
+
+## TODO
+
+Some DevOps fun and a bootstrap of minimal, appropriate devops for the languages I've used. The point of this is to exercise some good practices, make it easy to reuse and also document it all in a way that is easy to teach others.
+
+If you are a software developer, don't get frustrated by resource allocation or a devops team. If you are a CTO, don't shy away from the appropriate setup because you think stuff like Kubernetes is too complex or you don't understand microservices.
+
+Links to elaborate on:
+
+*  for provisioning and container management
+  *  to containerize code plus libraries
+*  for secrets
+*  for feature flags and having a constant ship train to live
+*  for tracking software
