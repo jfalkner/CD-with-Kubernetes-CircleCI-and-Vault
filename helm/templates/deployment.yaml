@@ -1,0 +1,19 @@
+{{- range $name, $values := .Values.deployments }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+spec:
+  replicas: {{ $values.replicas | default 1 }}
+  template:
+    metadata:
+      labels:
+        run: {{ $name }}
+    spec:
+      containers:
+      - image: {{ $name }}:{{ $values.version }}
+        name: {{ $name }}
+        ports:
+        - containerPort: {{ $values.port }}
+          protocol: TCP
+{{- end }}

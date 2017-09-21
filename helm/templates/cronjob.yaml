@@ -1,0 +1,21 @@
+{{- range $index, $job := .Values.cronjobs }}
+apiVersion: batch/v2alpha1
+kind: CronJob
+metadata:
+  name: {{ $index }}
+spec:
+  schedule: {{ $job.schedule | quote }}
+  successfulJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox
+            args:
+            - /bin/sh
+            - -c
+            - {{ $job.command }}
+          restartPolicy: OnFailure
+{{- end }}

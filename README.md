@@ -6,10 +6,10 @@ Brief overview of streamlining software developer operations. Written by someone
 
 Why care? A good, scalable devops stack saves the entire team time. It reduces maintenance time dramatically. It also designs away many scalability issues and team/org failure modes. You don't need a dedicated "devops" team to do this right.
 
-At really high level, here is how it works:
+A high level overview of how it works:
 
 * Track all code changes in [git](https://git-scm.com/) and review in [GitHub](https://github.com/)
-* Isolate code and reproducibly run it via [Docker](https://www.docker.com/) in a scalable way on servers with [Kubernetes](https://kubernetes.io/docs/home/) and use Helm to version entire rollouts of services and jobs.
+* Isolate code and reproducibly run it via [Docker](https://www.docker.com/) in a scalable way on servers with [Kubernetes](https://kubernetes.io/docs/home/) and use [Helm](https://github.com/kubernetes/helm/) to version entire rollouts of services and jobs.
 * Auto-test code updates and continuously deploy with CircleCI. Prototype with feature flags in [Launch Darkly](https://launchdarkly.com/)
 * Stash secrets in [Vault](https://www.vaultproject.io/)
 
@@ -134,3 +134,47 @@ kubectl set image deployment/hello-node hello-node=hello-node/v2
 The cycle above repeats for every released service update. You then config how many instances (pods) of a services shoudld run, and how many servers (nodes) should be used to scale the system. More complex configuration can be done to co-locate pods. It all runs on a VPC too, meaning by default traffic is appropriately restricted to just the k8s subnet.
 
 K8s also can run one time jobs, reoccuring jobs and expose services for use externally.
+
+## Helm
+
+[Helm](https://github.com/kubernetes/helm/) manages sets of Kubernetes controllers. It provides several benefits. Most important is that you can reliably deploy deployments, services and cronjobs to Kubernetes. You don't have to manually, one-by-one run a a bunch of `kubectl set` commands. This saves time and also provides a reliable way to deploy all changes or roll back to previous configs.
+
+Another benefit of Helm is that it uses a "Chart" concept to split out values from templates of Kubernetes contoller files. This let's you quickly pull and modify existing configs for common services from [Helm's repository](https://github.com/kubernetes/charts) or other locations. It also means your custom Kubernetes controller configs can be reduced to a few templates and a `values.yaml` file such as below.
+
+```
+# values.yaml that captures a list of deployments and cronjobs and only the customized values
+
+# List of microservices. Each is rendered by templates/deployments.yaml
+deployments:
+  hello-node:
+    version: v1
+    port: 8080
+
+# List of cron jobs. Each is rendered by templates/cronjob.yaml
+cronjobs:
+  hello:
+    schedule: "*/1 * * * *"
+    command: date; echo Hello from the Kubernetes cluster
+```
+
+And then deploy everything using `helm` commands.
+
+```
+# install the chart with all the above services as the `example` deploy
+helm install --name example ./helm
+
+# any sort of edit to the Kubernetes controller files. e.g. v2 of a service
+
+# install the next version
+helm upgrade example ./helm
+
+# inspect deploys
+helm ls
+# NAME              	REVISION	UPDATED                 	STATUS  	CHART                    	NAMESPACE
+# example           	2       	Sun Sep 17 18:50:03 2017	DEPLOYED	Example Helm Deploy-0.0.1	default
+
+# oops, botched it. reset the deployment to the last version
+helm rollback example 1
+```
+
+Don't be fooled by the simplicity of `values.yaml` above. There is no magic. Most of the Kubernetes related boiler plate is in `./templates`, which Helm renders using `values.yaml`. The convenience is you can leverage `values.yaml` to be one place that tracks all customization of default chart configs. Much easier to read than a directory full of Kubernetes controller files.

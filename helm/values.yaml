@@ -1,0 +1,13 @@
+# Represents a version of the full application
+
+# List of microservices. Each is rendered by templates/deployments.yaml
+deployments:
+  hello-node:
+    version: v1
+    port: 8080
+
+# List of cron jobs. Each is rendered by templates/cronjob.yaml
+cronjobs:
+  hello:
+    schedule: "*/1 * * * *"
+    command: date; echo Hello from the Kubernetes cluster    
