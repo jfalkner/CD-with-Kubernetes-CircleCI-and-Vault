@@ -4,6 +4,12 @@
 
 This page is a collection of opinionated `git` usage.
 
+## Leave Good Descriptions for Commits
+
+Commits should have both a title and description. Even if you are using the command-line git client. This is as easy as using the `-m` flag twice with the title first and description second. Another tactic is typing `git commit` and then using your text editor to create a longer message. e.g. [SO has a good answer](https://stackoverflow.com/questions/16122234/how-to-commit-a-change-with-both-message-and-description-from-the-command-li) showing both of these.
+
+Keep in mind that commits live forever. A single, succinct title and a description that sets the context needed to understand the change and what was changed is often helpful.
+
 ## Rebase for Clean Commits
 
 It is not unusual to make many commits while working on something, especially if there are rounds of PR review and feedback. This usually ends up with a messy commit history that represents how the work was done, but isn't helpful afterward. If someone is learning the code or tracing a change (say that caused a bug), it is helpful to have a single logical commit with a detailed message. You can easily do this with [`git rebase`](https://git-scm.com/docs/git-rebase).
