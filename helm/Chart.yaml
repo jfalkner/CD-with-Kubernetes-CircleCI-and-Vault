@@ -1,0 +1,6 @@
+name: Example Helm Deploy
+version: 0.0.1
+description: Basic helm chart showing deploy of a few services and cron jobs.
+home: https://github.com/jfalkner/devops/
+sources:
+  - https://github.com/jfalkner/devops/helm
